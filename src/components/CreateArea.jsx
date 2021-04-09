@@ -19,7 +19,7 @@ function CreateArea(props) {
  
   return (
     <div>
-      <form onSubmit={(event) => {
+      <form className="create-note" onSubmit={(event) => {
         props.onAdd(note);
         setNote({
           title: "",
