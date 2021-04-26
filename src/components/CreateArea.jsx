@@ -33,9 +33,10 @@ function CreateArea(props) {
           content: ""
         });
         event.preventDefault();
+        setActive(false);
       }}>
-        {isActive && <input name="title" placeholder="Title" onChange={handleChange} value={note.title}/>}
-        <textarea name="content" placeholder="Take a note..." rows={isActive ? 3 : 1} onChange={handleChange} value={note.content} onClick={() => setActive(true)}/>
+        {isActive && <input name="title" placeholder="Title" onChange={handleChange} value={note.title} disabled={props.isDisabled}/>}
+        <textarea name="content" placeholder="Take a note..." rows={isActive ? 3 : 1} onChange={handleChange} value={note.content} disabled={props.isDisabled} onClick={() => setActive(true)} />
         <Zoom in={isActive}>
           <Fab type="submit"><AddIcon /></Fab>
         </Zoom>

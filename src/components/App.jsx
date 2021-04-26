@@ -9,7 +9,8 @@ import qs from 'qs';
 function App() {
 
   const [notes, setNotes] = useState([]);
-
+  const [modified, setModified] = useState(true);
+ 
   function addNote(note) {
     const options = {
       method: "POST",
@@ -19,7 +20,8 @@ function App() {
     };
     axios(options)
       .then(response => {
-        console.log(response);
+        console.log(response.statusText + ", " + response.data);
+        setModified(true);
       });
   }
 
@@ -32,22 +34,28 @@ function App() {
     };
     axios(options)
       .then(response => {
-        console.log(response);
+        console.log(response.statusText + ", " + response.data);
+        setModified(true);
       });
   }
 
   useEffect(() => {
+    console.log("useEffect is called");
+    if (!modified){
+      return;
+    }
     axios.get("http://localhost:3001").then(response => {
-      // console.log(response);
+      console.log('Sent the get request');
       setNotes(response.data);
+      setModified(false);
     });
-  }, [notes]);
+  }, [modified]);
 
   return (
     <div>
       <Header />
-      <CreateArea onAdd={addNote} />
-      {notes.map((note, index) => <Note key={note._id} id={note._id} title={note.title} content={note.content} onDelete={deleteNote} /> )}
+      <CreateArea onAdd={addNote} isDisabled={modified} />
+      {notes.map(note => <Note key={note._id} id={note._id} title={note.title} content={note.content} onDelete={deleteNote} /> )}
       <Footer />
     </div>
   );
